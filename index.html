@@ -3,12 +3,60 @@
 <head>
   <meta charset="UTF-8">
   <title>Text Input Page</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+  body {
+    background: #f3f3f3;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+  }
+  </style>
+
 </head>
 <body>
-  <form action="cardDisplay.html" method="GET">
-    <textarea name="userText" rows="4" cols="50" placeholder="Enter your text here..."></textarea>
-    <br>
-    <button type="submit">만들기</button>
-  </form>
+  <br>
+  <br>
+
+  <div class="formatter-options">
+    <label>Font Size: <input type="number" id="fontSizeInput" min="1" max="36" value="14"></label>
+    <label>Color: <input type="color" id="colorInput"></label>
+    <label>Bold: <input type="checkbox" id="boldCheckbox"></label>
+  </div>
+  <br>
+
+  <textarea id="textInput" rows="20" cols="50" placeholder="Enter your text here..." style="width: 370px;"></textarea>
+
+  <br>
+  <button onclick="submitText()">만들기</button>
+
+  <script>
+    document.getElementById('fontSizeInput').addEventListener('change', applyFormatting);
+    document.getElementById('colorInput').addEventListener('change', applyFormatting);
+    document.getElementById('boldCheckbox').addEventListener('change', applyFormatting);
+
+    function applyFormatting() {
+      var fontSize = document.getElementById('fontSizeInput').value + 'px';
+      var color = document.getElementById('colorInput').value;
+      var fontWeight = document.getElementById('boldCheckbox').checked ? 'bold' : 'normal';
+      var textArea = document.getElementById('textInput');
+      textArea.style.fontSize = fontSize;
+      textArea.style.color = color;
+      textArea.style.fontWeight = fontWeight;
+    }
+
+    function submitText() {
+      var textData = {
+        text: document.getElementById('textInput').value,
+        fontSize: document.getElementById('textInput').style.fontSize,
+        color: document.getElementById('textInput').style.color,
+        fontWeight: document.getElementById('textInput').style.fontWeight
+      };
+      var queryString = encodeURIComponent(JSON.stringify(textData));
+      window.location.href = 'cardDisplay.html?data=' + queryString;
+    }
+  </script>
 </body>
 </html>

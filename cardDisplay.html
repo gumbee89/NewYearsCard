@@ -111,22 +111,19 @@
 </div>
 
 <script>
-  function getQueryParams() {
-      var params = {};
-      location.search.substring(1).split("&").forEach(function(part) {
-        var item = part.split("=");
-        params[item[0]] = decodeURIComponent(item[1]);
-      });
-      return params;
-    }
-
-    window.onload = function() {
-      var params = getQueryParams();
-      if (params.userText) {
-        document.getElementById('content-container').textContent = params.userText;
+   window.onload = function() {
+      var params = new URLSearchParams(window.location.search);
+      var data = params.get('data');
+      if (data) {
+        var textData = JSON.parse(decodeURIComponent(data));
+        document.getElementById('content-container').innerHTML = textData.text
+          .split('\n')
+          .map(line => `<p style="font-size: ${textData.fontSize}; color: ${textData.color}; font-weight: ${textData.fontWeight};">${line}</p>`)
+          .join('');
       }
     };
 </script>
+
 
 </body>
 </html>
